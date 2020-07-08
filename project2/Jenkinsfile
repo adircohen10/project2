@@ -1,0 +1,11 @@
+pipeline {
+agent any
+  stages {
+    stage('checkout') {
+      steps{
+        git 'LINK.git'
+    }}
+  stage('build') {
+    steps {
+      bat 'python e2e.py'
+  }}}}
