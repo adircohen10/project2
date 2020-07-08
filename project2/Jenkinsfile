@@ -3,9 +3,30 @@ agent any
   stages {
     stage('checkout') {
       steps{
-        git 'LINK.git'
-    }}
-  stage('build') {
-    steps {
-      bat 'python e2e.py'
-  }}}}
+         echo 'Get some code from a GitHub repository'
+         git 'https://github.com/adircohen10/project2/blob/master/project2'
+      }
+        stage('build') {
+          steps{
+             echo  'Build Docker Image'         
+               script {
+                    def customImage = docker.build("wog:${env.BUILD_ID}")
+                    customImage.push()
+                }
+          }
+           stage('Run') {
+             steps{
+                 echo 'dockerized application and expose it'
+                 sh 'docker-run-command.txt'
+             }
+               stage('Run Unit Tests') {
+                  steps {
+                  // e2e.py module it will perform a selenium test on the "scores web service"
+                    sh 'python e2e.py'
+                  }
+               }
+            }   
+         }
+      }
+   }
+}
