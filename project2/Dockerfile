@@ -4,5 +4,4 @@ WORKDIR .
 COPY . .
 RUN pip install -r requirements.txt 
 RUN pip install flask
-EXPOSE 80:8777
 CMD python ./MainScores.py
